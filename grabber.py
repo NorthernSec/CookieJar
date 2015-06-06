@@ -8,7 +8,7 @@
 # Copyright (c) 2015    Pieter-Jan Moreels
 
 # Imports
-
+import argparse
 from lib.Cookie import Cookie
 from lib.MozillaGrabber import MozillaGrabber
 
@@ -16,5 +16,11 @@ from lib.MozillaGrabber import MozillaGrabber
   
 # Main
 if __name__=='__main__':
-  mg=MozillaGrabber()
-  mg.grabAndStore("CookieJar.sqlite")
+  description='''Grabs all the cookies it can access, on the system it runs on'''
+
+  parser = argparse.ArgumentParser(description=description)
+  parser.add_argument('-v', action='store_true', help='Verbose')
+  args = parser.parse_args()
+
+  mg=MozillaGrabber(args)
+  mg.grabAndStore("/tmp/CookieJar.sqlite")

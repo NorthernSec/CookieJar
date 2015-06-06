@@ -39,14 +39,15 @@ def addToJar(path, cookies):
 def selectAllFrom(path, table):
   conn=sqlite3.connect(path)
   curs=conn.cursor()
-  data=curs.execute("SELECT * FROM %s"%table)
+  data=list(curs.execute("SELECT * FROM %s"%table))
   dataArray=[]
   names = list(map(lambda x: x[0], curs.description))
-  j={}
   for d in data:
+    j={}
     for i in range(0,len(names)):
       j[names[i].lower()]=d[i]
     dataArray.append(j)
   conn.close()
+  print(dataArray)
   return dataArray
 
