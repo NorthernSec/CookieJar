@@ -39,7 +39,9 @@ class MozillaGrabber():
       for p in self.getProfiles(u):
         if self.args.v: print(" |   |- Grabbing cookies of profile %s"%p)
         for c in selectAllFrom(self.cookieTrail%(u,p), "moz_cookies"):
-          cs.append(Cookie(c['basedomain'], c['name'], c['value'], 'firefox', '%s:%s'%(u,p), c['lastaccessed'], c['creationtime']))
+          if not any(d['domain']==c['basedomain'] and d['name']==c['name'] and d['value']==c['value'] and d['browser']=='firefox'
+                     and d['user']=='%s:%s'%(u,p) for d in cookies):
+            cs.append(Cookie(c['basedomain'], c['name'], c['value'], 'firefox', '%s:%s'%(u,p), c['lastaccessed'], c['creationtime']))
         if self.args.v: print(" |   | -> Stored %s new cookies"%len(cs))
     addToJar(path, cs)
 

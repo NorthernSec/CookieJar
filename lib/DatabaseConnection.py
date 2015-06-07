@@ -48,6 +48,5 @@ def selectAllFrom(path, table):
       j[names[i].lower()]=d[i]
     dataArray.append(j)
   conn.close()
-  print(dataArray)
   return dataArray
 
