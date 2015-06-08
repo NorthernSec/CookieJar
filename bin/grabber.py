@@ -8,6 +8,11 @@
 # Copyright (c) 2015    Pieter-Jan Moreels
 
 # Imports
+import os
+import sys
+runpath=os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(runpath, '..'))
+
 import argparse
 from lib.Cookie import Cookie
 from lib.MozillaGrabber import MozillaGrabber

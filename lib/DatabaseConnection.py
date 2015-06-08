@@ -36,10 +36,11 @@ def addToJar(path, cookies):
   jar.commit()
   jar.close()
 
-def selectAllFrom(path, table):
+def selectAllFrom(path, table, where=None):
   conn=sqlite3.connect(path)
   curs=conn.cursor()
-  data=list(curs.execute("SELECT * FROM %s"%table))
+  wh="where "+" and ".join(where) if where else ""
+  data=list(curs.execute("SELECT * FROM %s %s"%(table,wh)))
   dataArray=[]
   names = list(map(lambda x: x[0], curs.description))
   for d in data:
