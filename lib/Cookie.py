@@ -11,8 +11,9 @@
 import time
 
 class Cookie():
-  def __init__(self, domain, name, value, browser, user, lastUsed=None, creationTime=None, timeJarred=None, notes=None):
+  def __init__(self, domain, host, name, value, browser, user, lastUsed=None, creationTime=None, timeJarred=None, notes=None):
     self.domain=domain
+    self.host=host
     self.name=name
     self.value=value
     self.browser=browser

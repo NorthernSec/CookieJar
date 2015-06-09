@@ -12,6 +12,7 @@ def grabJar(path):
   jar.execute('''CREATE TABLE IF NOT EXISTS CookieJar
                  (ID            INTEGER  PRIMARY KEY AUTOINCREMENT,
                   Domain        TEXT            NOT NULL,
+                  Host          Text            Not Null,
                   Name          TEXT            NOT NULL,
                   Value         TEXT            NOT NULL,
                   LastUsed      TEXT,
@@ -29,10 +30,10 @@ def addToJar(path, cookies):
   jar=sqlite3.connect(path)
   for c in cookies:
     jar.execute('''INSERT INTO CookieJar
-                  (Domain, Name, Value, LastUsed, CreationTime, TimeJarred, Notes, browser, user )
-                   VALUES(:dom,:name,:val, :lu, :ct, :tj, :notes, :browser, :user)''',
-                   {'dom':c.domain,     'name': c.name,  'val':    c.value,   'lu':  c.lastUsed, 'ct':c.creationTime,
-                    'tj': c.timeJarred, 'notes':c.notes, 'browser':c.browser, 'user':c.user})
+                  (Domain, Host,  Name, Value, LastUsed, CreationTime, TimeJarred, Notes, browser, user )
+                   VALUES(:dom,:host,:name,:val, :lu, :ct, :tj, :notes, :browser, :user)''',
+                   {'dom':c.domain,     'host': c.host,     'name': c.name,  'val':    c.value,   'lu':  c.lastUsed,
+                    'ct':c.creationTime,'tj': c.timeJarred, 'notes':c.notes, 'browser':c.browser, 'user':c.user})
   jar.commit()
   jar.close()
 
@@ -40,6 +41,7 @@ def selectAllFrom(path, table, where=None):
   conn=sqlite3.connect(path)
   curs=conn.cursor()
   wh="where "+" and ".join(where) if where else ""
+  print("SELECT * FROM %s %s"%(table,wh))
   data=list(curs.execute("SELECT * FROM %s %s"%(table,wh)))
   dataArray=[]
   names = list(map(lambda x: x[0], curs.description))

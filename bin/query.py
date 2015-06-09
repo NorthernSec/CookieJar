@@ -43,8 +43,8 @@ if __name__=='__main__':
   if args.id: where.append("id='%s'"%args.id)
   if len(where)==0:
     sys.exit("At least specify one argument")
-  db=args.database if args.database else "CookieJar.sqlite"
-  cookies = selectAllFrom(db, "CookieJar", where)
+  db=args.database if args.database else os.path.join(runpath, '../CookieJar.sqlite')
+  cookies = selectAllFrom(db, 'CookieJar', where)
   for c in cookies:
     print(c)
   if args.s:
