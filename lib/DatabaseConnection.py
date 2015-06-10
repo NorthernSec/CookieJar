@@ -4,7 +4,7 @@
 import platform
 import sqlite3
 
-from lib.Cookie import Cookie
+from Cookie import Cookie
 
 # Functions
 def grabJar(path):

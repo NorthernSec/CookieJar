@@ -12,12 +12,15 @@ import os
 import platform
 
 def subdirsOf(dir):
-  return [name for name in os.listdir(dir) if os.path.isdir(os.path.join(dir, name))]
+  try:
+    return [name for name in os.listdir(dir) if os.path.isdir(os.path.join(dir, name))]
+  except:
+    return []
 
 def getUsers():
   if platform.system() == "Linux":
     users=subdirsOf("/home")
-    users.remove("lost+found")
+    if "lost+found" in users: users.remove("lost+found")
     return users
   elif platform.system() == "Windows":
     return subdirsOf("C:/users")

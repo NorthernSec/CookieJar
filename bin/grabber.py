@@ -11,11 +11,11 @@
 import os
 import sys
 runpath=os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(runpath, '..'))
+sys.path.append(os.path.join(runpath, '../lib'))
 
 import argparse
-from lib.Cookie import Cookie
-from lib.MozillaGrabber import MozillaGrabber
+from Cookie import Cookie
+from MozillaGrabber import MozillaGrabber
 
 # Functions
   
