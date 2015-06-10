@@ -31,8 +31,8 @@ if __name__=='__main__':
   parser.add_argument('-b', metavar='browser',              help='Browser the cookies come from')
   parser.add_argument('-u', metavar='user',                 help='User the cookies come from')
   parser.add_argument('-i', metavar='id',                   help='ID of the cookie in the CookieJar database')
-  parser.add_argument('-t', metavar='browser:user:profile', help='Browser, user and profile to inject the cookies in')
-  parser.add_argument('db', metavar='database',             help='Database the cookies are stored in')
+  parser.add_argument('-t', metavar='browser:user:profile', help='Browser, user and profile to inject the cookies in' required=True)
+  parser.add_argument('db', metavar='database', nargs='?',  help='Database the cookies are stored in')
   args = parser.parse_args()
 
   where=[]
@@ -48,6 +48,11 @@ if __name__=='__main__':
 
   if browser == 'firefox':
     injector=MozillaGrabber(args)
+  elif browser == 'chrome':
+    sys.exit('Still baking...')
+  else:
+    sys.exit('Invalid browser')
+
   db=args.db if args.db else os.path.join(runpath, '../CookieJar.sqlite')
 
   cookies=[Cookie(x['domain'], x['host'], x['name'], x['value'], x['browser'], x['user'], x['lastused'], x['creationtime'], x['timejarred'], x['notes']) for x in selectAllFrom(db, 'CookieJar', where=where)]

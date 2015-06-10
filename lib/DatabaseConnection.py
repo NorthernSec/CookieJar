@@ -41,7 +41,6 @@ def selectAllFrom(path, table, where=None):
   conn=sqlite3.connect(path)
   curs=conn.cursor()
   wh="where "+" and ".join(where) if where else ""
-  print("SELECT * FROM %s %s"%(table,wh))
   data=list(curs.execute("SELECT * FROM %s %s"%(table,wh)))
   dataArray=[]
   names = list(map(lambda x: x[0], curs.description))

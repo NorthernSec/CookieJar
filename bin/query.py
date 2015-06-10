@@ -41,11 +41,10 @@ if __name__=='__main__':
   if args.v:  where.append("value='%s'"%args.v)
   if args.u:  where.append("user='%s'"%args.u)
   if args.id: where.append("id='%s'"%args.id)
-  if len(where)==0:
-    sys.exit("At least specify one argument")
   db=args.database if args.database else os.path.join(runpath, '../CookieJar.sqlite')
   cookies = selectAllFrom(db, 'CookieJar', where)
+  print("id | domain | host | name | value | browser | user | lastUsed | creationTime | timeJarred | notes")
   for c in cookies:
-    print(c)
+    print("%s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s"%(c['id'],c['domain'],c['host'],c['name'],c['value'],c['browser'],c['user'],c['lastused'],c['creationtime'],c['timejarred'],c['notes']))
   if args.s:
     print("Total of %s cookie(s)"%len(cookies))

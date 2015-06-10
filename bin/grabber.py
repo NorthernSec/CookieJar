@@ -24,8 +24,10 @@ if __name__=='__main__':
   description='''Grabs all the cookies it can access, on the system it runs on'''
 
   parser = argparse.ArgumentParser(description=description)
-  parser.add_argument('-v', action='store_true', help='Verbose')
+  parser.add_argument('-v', action='store_true',           help='Verbose')
+  parser.add_argument('db', metavar='database', nargs='?', help='Database')
   args = parser.parse_args()
 
+  db=args.db if args.db else os.path.join(runpath, '../CookieJar.sqlite')
   mg=MozillaGrabber(args)
-  mg.grabAndStore("/tmp/CookieJar.sqlite")
+  mg.grabAndStore(db)
