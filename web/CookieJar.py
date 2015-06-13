@@ -16,6 +16,7 @@ import sys
 _runPath = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(_runPath, "../lib"))
 
+import argparse
 import signal
 import time
 
@@ -26,9 +27,9 @@ from flask import Flask, render_template, request, redirect, jsonify
 from flask.ext.pymongo import PyMongo
 from flask.ext.login import LoginManager, current_user, login_user, logout_user, login_required
 from werkzeug import secure_filename
-from passlib.hash import pbkdf2_sha256
 
 from Config import Configuration as conf
+from DatabaseConnection import selectAllFrom
 # Variables
 shutdowntime=3
 app=Flask(__name__,static_folder='static',static_url_path='/static')
@@ -59,13 +60,39 @@ def shutdown():
 def index():
   return render_template("index.html",info=info)
 
+@app.route('/grab')
+def grab():
+  return render_template("grab.html",info=info)
+
+@app.route('/query')
+def query():
+  c=selectAllFrom(info['db'], 'CookieJar')
+  return render_template("query.html", cookies=c ,info=info)
+
+# Filters
+@app.template_filter('user')
+def getUser(x):
+  return x.split(':')[0]
+
+@app.template_filter('toDate')
+def toDate(x):
+  return time.strftime('%m/%d/%Y %H:%M:%S',time.gmtime(x/1000))
+
 # Main
 if __name__=='__main__':
+  # Argparse
+  description='''CookieJar web interface'''
+  parser = argparse.ArgumentParser(description=description)
+  parser.add_argument('db', metavar='database', nargs='?', help='Database')
+  args = parser.parse_args()
+
+  db=args.db if args.db else conf.getCookieJar()
+
   host=conf.getHost()
   port=conf.getPort()
 
   global info
-  info={'db':conf.getCookieJar()}
+  info={'db':db}
 
   if conf.getDebug():
     app.run(host=host, port=port, debug=True)
