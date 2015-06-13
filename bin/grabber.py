@@ -14,6 +14,7 @@ runpath=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(runpath, '../lib'))
 
 import argparse
+from Config import Configuration as conf
 from Cookie import Cookie
 from MozillaGrabber import MozillaGrabber
 
@@ -28,6 +29,6 @@ if __name__=='__main__':
   parser.add_argument('db', metavar='database', nargs='?', help='Database')
   args = parser.parse_args()
 
-  db=args.db if args.db else os.path.join(runpath, '../CookieJar.sqlite')
+  db=args.db if args.db else conf.getCookieJar()
   mg=MozillaGrabber(args)
   mg.grabAndStore(db)

@@ -12,9 +12,6 @@ import sys
 import os
 runPath = os.path.dirname(os.path.realpath(__file__))
 
-import pymongo
-import redis
-
 import re
 import datetime
 import configparser
@@ -66,4 +63,4 @@ class Configuration():
   # Database
   @classmethod
   def getCookieJar(cls):
-    return os.path.join("..", cls.readSetting("CookieJar", "Path", cls.default['db']))
+    return os.path.join(runPath, "..", cls.readSetting("CookieJar", "Path", cls.default['db']))

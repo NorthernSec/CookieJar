@@ -18,12 +18,12 @@ def subdirsOf(dir):
     return []
 
 def getUsers():
+  users=None
   if platform.system() == "Linux":
     users=subdirsOf("/home")
     if "lost+found" in users: users.remove("lost+found")
-    return users
   elif platform.system() == "Windows":
-    return subdirsOf("C:/users")
-  else:
-    return None
+    users= subdirsOf("C:/users")
+    if "Public" in users: users.remove("Public")
+  return None
 

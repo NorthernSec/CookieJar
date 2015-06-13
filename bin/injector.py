@@ -53,7 +53,7 @@ if __name__=='__main__':
   else:
     sys.exit('Invalid browser')
 
-  db=args.db if args.db else os.path.join(runpath, '../CookieJar.sqlite')
+  db=args.db if args.db else conf.getCookieJar()
 
   cookies=[Cookie(x['domain'], x['host'], x['name'], x['value'], x['browser'], x['user'], x['lastused'], x['creationtime'], x['timejarred'], x['notes']) for x in selectAllFrom(db, 'CookieJar', where=where)]
   if args.v:
