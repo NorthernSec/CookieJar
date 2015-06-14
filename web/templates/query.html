@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Index - CookieJar</title>
+  <!-- defaults -->
+  {% include 'defaultHead.html' %}
+</head>
+
+<body onload="setSettings()">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <!-- Nav -->
+        {% include 'menu.html' %}
+        <!-- End Nav -->
+        <!-- Content -->
+        <div class=well>
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr class="warning">
+                <td>Domain</td>
+                <td>Host</td>
+                <td>Name</td>
+                <td>Browser</td>
+                <td>User</td>
+                <td>Time Jarred</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for c in cookies %}
+                <tr>
+                  <td>{{c['domain']}}</td>
+                  <td>{{c['host']}}</td>
+                  <td>{{c['name']}}</td>
+                  <td>{{c['browser']|title}}</td>
+                  <td>{{c['user']|user}}</td>
+                  <td>{{c['timejarred']|toDate}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
