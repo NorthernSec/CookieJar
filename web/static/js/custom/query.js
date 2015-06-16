@@ -8,14 +8,15 @@ $(document).ready(function(){
       browser:$('#browser').val().trim(),
       user:   $('#user').val().trim()
     }, function(data){
-      fillTable(data);
+      fillTable(data['results']);
     })
   })
 })
 
 function fillTable(data){
   $('#data > tbody > tr').remove();
-  for(i=0;i<data.length;i++){
-    $('#data > tbody').append('<tr><td>'+i['domain']+'</td><td>'+i['host']+'</td><td>'+i['name']+'</td><td>'+i['browser']+'</td><td>'+i['user']+'</td><td>'+i[timejarred]+'</td></tr>');
+  for(j=0;j<data.length;j++){
+    i=data[j];
+    $('#data > tbody').append('<tr><td>'+i['domain']+'</td><td>'+i['host']+'</td><td>'+i['name']+'</td><td>'+i['browser']+'</td><td>'+i['user']+'</td><td>'+i['timejarred']+'</td></tr>');
   }
 }

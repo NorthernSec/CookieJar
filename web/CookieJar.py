@@ -69,6 +69,29 @@ def query():
   c=selectAllFrom(info['db'], 'CookieJar')
   return render_template("query.html", cookies=c ,info=info)
 
+# AJAX routes
+@app.route('/_query')
+def _query():
+  domain = request.args.get('domain', type=str).strip()
+  name=   request.args.get('name', type=str).strip()
+  id=     request.args.get('id', type=str).strip()
+  value=  request.args.get('value', type=str).strip()
+  browser=request.args.get('browser', type=str).strip()
+  user=   request.args.get('user', type=str).strip()
+  where = []
+  if domain:  where.append('domain="%s"'%domain)
+  if name:    where.append('name="%s"'%name)
+  if id:      where.append('id="%s"'%id)
+  if value:   where.append('value="%s"'%value)
+  if browser: where.append('browser="%s"'%browser)
+  if user:    where.append('user="%s"'%user)
+  results=selectAllFrom(info['db'], 'CookieJar', where)
+  for x in results:
+    x['timejarred']  =toDate(x['timejarred'])
+    x['lastused']    =toDate(x['lastused'])
+    x['creationtime']=toDate(x['creationtime'])
+  return jsonify({"results":results})
+
 # Filters
 @app.template_filter('user')
 def getUser(x):
