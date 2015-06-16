@@ -15,7 +15,7 @@ def grabJar(path):
                   Host          Text            Not Null,
                   Name          TEXT            NOT NULL,
                   Value         TEXT            NOT NULL,
-                  LastUsed      TEXT,
+                  LastUsed      INTEGER,
                   CreationTime  INTEGER,
                   TimeJarred    INTEGER         NOT NULL,
                   Notes         TEXT,

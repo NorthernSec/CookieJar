@@ -4,6 +4,7 @@
   <title>Index - CookieJar</title>
   <!-- defaults -->
   {% include 'defaultHead.html' %}
+  <script type="text/javascript" src="/static/js/custom/query.js"></script>
 </head>
 
 <body onload="setSettings()">
@@ -14,8 +15,19 @@
         {% include 'menu.html' %}
         <!-- End Nav -->
         <!-- Content -->
-        <div class=well>
-          <table class="table table-hover table-striped">
+        <div class="well">
+          <div class="well">
+            <table>
+              <tr><td>Domain</td> <td><input type="text" placeholder="Domain"  id="domain"> </td>
+                  <td>Name</td>   <td><input type="text" placeholder="Name"    id="name">   </td></tr>
+              <tr><td>ID</td>     <td><input type="text" placeholder="ID"      id="id">     </td>
+                  <td>Value</td>  <td><input type="text" placeholder="Value"   id="value">  </td></tr>
+              <tr><td>Browser</td><td><input type="text" placeholder="Browser" id="browser"></td>
+                  <td>User</td>   <td><input type="text" placeholder="User"    id="user">   </td></tr>
+            </table>
+            <button id="search">Search</button>
+          </div>
+          <table id='data' class="table table-hover table-striped">
             <thead>
               <tr class="warning">
                 <td>Domain</td>
