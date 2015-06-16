@@ -76,7 +76,7 @@ def getUser(x):
 
 @app.template_filter('toDate')
 def toDate(x):
-  return time.strftime('%m/%d/%Y %H:%M:%S',time.gmtime(x/1000))
+  return time.strftime('%m/%d/%Y %H:%M:%S',time.gmtime(x/1000000))
 
 # Main
 if __name__=='__main__':

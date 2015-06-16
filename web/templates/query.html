@@ -28,13 +28,21 @@
             </thead>
             <tbody>
               {% for c in cookies %}
-                <tr>
-                  <td>{{c['domain']}}</td>
-                  <td>{{c['host']}}</td>
-                  <td>{{c['name']}}</td>
+                <tr data-toggle="collapse" data-target="#{{ loop.index }}">
+                  <td>{{c['domain'][:30]}}</td>
+                  <td>{{c['host'][:30]}}</td>
+                  <td>{{c['name'][:30]}}</td>
                   <td>{{c['browser']|title}}</td>
                   <td>{{c['user']|user}}</td>
                   <td>{{c['timejarred']|toDate}}</td>
+                </tr>
+                <tr id="{{ loop.index }}" class="collapse">
+                  <td colspan="6">
+                    <table class="table table-hover table-striped">
+                      <tr><td>Value</td><td>{{c['value']}}</td></tr>
+                      <tr><td>Notes</td><td>{{c['notes']}}</td></tr>
+                    </table>
+                  </td>
                 </tr>
               {% endfor %}
             </tbody>
