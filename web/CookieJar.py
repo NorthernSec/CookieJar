@@ -30,11 +30,24 @@ from werkzeug import secure_filename
 
 from Config import Configuration as conf
 from DatabaseConnection import selectAllFrom
+from Toolkit import getUsers
+from MozillaGrabber import MozillaGrabber
+
 # Variables
 shutdowntime=3
 app=Flask(__name__,static_folder='static',static_url_path='/static')
 
 # Functions
+def grabable():
+  users={}
+  for u in getUsers():
+    browsers={}
+    for s in supported:
+      p=s.getProfiles(u)
+      if p: browsers[s.getBrowserName()]=p
+    users[u]=browsers
+  return users
+
 def sig_handler(sig,frame):
   print('Caught signal: %s'%sig)
   IOLoop.instance().add_callback(shutdown)
@@ -62,7 +75,7 @@ def index():
 
 @app.route('/grab')
 def grab():
-  return render_template("grab.html",info=info)
+  return render_template("grab.html",info=info, grabable=grabable())
 
 @app.route('/query')
 def query():
@@ -115,7 +128,10 @@ if __name__=='__main__':
   port=conf.getPort()
 
   global info
-  info={'db':db}
+  info={'db':db,
+        'supported':['Mozilla Firefox']}
+  global supported
+  supported=[MozillaGrabber(args)]
 
   if conf.getDebug():
     app.run(host=host, port=port, debug=True)

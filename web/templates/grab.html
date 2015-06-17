@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Index - CookieJar</title>
+  <!-- defaults -->
+  {% include 'defaultHead.html' %}
+  <script type="text/javascript" src="/static/js/custom/query.js"></script>
+</head>
+
+<body onload="setSettings()">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <!-- Nav -->
+        {% include 'menu.html' %}
+        <!-- End Nav -->
+        <!-- Content -->
+        <div class="well">
+          {% include "grabable.html"%}
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

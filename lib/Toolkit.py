@@ -25,5 +25,5 @@ def getUsers():
   elif platform.system() == "Windows":
     users= subdirsOf("C:/users")
     if "Public" in users: users.remove("Public")
-  return None
+  return users
 

