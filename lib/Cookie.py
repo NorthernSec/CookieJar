@@ -20,5 +20,5 @@ class Cookie():
     self.user=user
     self.lastUsed=lastUsed
     self.creationTime=creationTime
-    self.timeJarred=timeJarred if timeJarred else int(time.time()*1000000)
+    self.timeJarred=timeJarred if timeJarred else int(time.time()*10000000)
     self.notes=notes
