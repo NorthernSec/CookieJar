@@ -1,12 +1,12 @@
 {% for user in grabable %}
-  <ul>
+  <ul class="topNode">
     <li>
       <input type="checkbox" id="chk:{{user}}">{{user}} <br />
-      <ul>
+      <ul class="node">
         {% for browser in grabable[user] %}
           <li>
             <input type="checkbox" id="chk:{{user}}|{{browser}}">{{browser}} <br />
-            <ul>
+            <ul class="node">
               {% for profile in grabable[user][browser] %}
                 <li><input type="checkbox" id="chk:{{user}}|{{browser}}|{{profile}}">{{profile}}</li>
               {% endfor %}
