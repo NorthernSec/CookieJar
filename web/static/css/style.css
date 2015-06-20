@@ -11,6 +11,13 @@ ul.node li{
 }
 ul.node{
   margin-top:-1px;
-  border-left: 1px black solid;
+  border-left:1px black solid;
+  padding-top:3px;
   padding-left:10px;
+}
+.buttonPannel td{
+  padding-right:20px;
+}
+.buttonPannel button{
+  width:100px;
 }
