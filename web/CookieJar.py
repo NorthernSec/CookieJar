@@ -29,7 +29,7 @@ from flask.ext.login import LoginManager, current_user, login_user, logout_user,
 from werkzeug import secure_filename
 
 from Config import Configuration as conf
-from DatabaseConnection import selectAllFrom
+from DatabaseConnection import selectAllFrom, addToJar, grabJar
 from Toolkit import getUsers
 from MozillaGrabber import MozillaGrabber
 
@@ -83,9 +83,37 @@ def query():
   return render_template("query.html", cookies=c ,info=info)
 
 # AJAX routes
+@app.route('/_grab')
+def _grab():
+  items=request.args.get('grab', type=str).split(",")
+  grabbers={"Mozilla Firefox": MozillaGrabber(args)}
+  cookies=[]
+  failed=[]
+  for x in items:
+    try:
+      xs=x.split('|')
+      if len(xs)>0: xs[0]=xs[0].replace("chk:","")
+      if len(xs)==3:
+        cookies.extend(grabbers[xs[1]].grab(xs[0], xs[2], rc=True))
+      if len(xs)==2:
+        cookies.extend(grabbers[xs[1]].grab(xs[0], rc=True))
+      if len(xs)==1:
+        for g in grabbers:
+          cookies.extend(g.grab(xs[0], rc=True))
+    except Exception as e:
+      ex=x.replace("chk:","")
+      ex.replace("|", " > ")
+      failed.append(ex)
+  try:
+    added=addToJar(info['db'], cookies)
+  except Exception as e:
+    print(e)
+    return jsonify({"store":"failure", "failures":failed, "all":len(cookies)})
+  return jsonify({"store":"success", "failures":failed, "new":added, "all":len(cookies)})
+
 @app.route('/_query')
 def _query():
-  domain = request.args.get('domain', type=str).strip()
+  domain= request.args.get('domain', type=str).strip()
   name=   request.args.get('name', type=str).strip()
   id=     request.args.get('id', type=str).strip()
   value=  request.args.get('value', type=str).strip()
@@ -123,6 +151,7 @@ if __name__=='__main__':
   args = parser.parse_args()
 
   db=args.db if args.db else conf.getCookieJar()
+  grabJar(db)
 
   host=conf.getHost()
   port=conf.getPort()

@@ -30,12 +30,12 @@ class MozillaGrabber():
     else:
       sys.exit("Unsupported platform")
 
-  def grabAndStore(self, database=None, allUsers=False):
+  def grabAndStore(self, database=None, allUsers=False, users=None):
     path = database if database else "../CookieJar.sqlite"
-    users=getUsers() if allUsers else [getpass.getuser()]
+    if not users or type(users) is not list:
+      users=getUsers() if allUsers else [getpass.getuser()]
     grabJar(path)
     cookies=selectAllFrom(path, "CookieJar")
-    cs=[]
     if self.args.v: print("Starting with Mozilla Cookies")
     for u in users:
       if self.args.v: print(" |- Grabbing cookies of %s"%u)
@@ -44,12 +44,19 @@ class MozillaGrabber():
           if args.v: print(" |   | -> Profile %s does not have cookies"%p)
           continue
         if self.args.v: print(" |   |- Grabbing cookies of profile %s"%p)
-        for c in selectAllFrom(self.cookieTrail%(u,p), "moz_cookies"):
-          if not any(d['domain']==c['basedomain'] and d['name']==c['name'] and d['value']==c['value'] and d['browser']=='firefox'
-                     and d['user']=='%s:%s'%(u,p) for d in cookies):
-            cs.append(Cookie(c['basedomain'], c['host'], c['name'], c['value'], 'firefox', '%s:%s'%(u,p), c['lastaccessed'], c['creationtime']))
-        if self.args.v: print(" |   | -> Stored %s new cookies"%len(cs))
-    addToJar(path, cs)
+        added=addToJar(path, [Cookie(c['basedomain'], c['host'], c['name'], c['value'], 'firefox', '%s:%s'%(u,p), c['lastaccessed'], c['creationtime']) for c in self.grab(u,p)])
+        if self.args.v: print(" |   | -> Stored %s new cookies"%added)
+
+  def grab(self, user, profile=None, rc=False):
+    profiles = [profile] if profile is not None else self.getProfiles(user)
+    cookies=[]
+    for p in profiles:
+      for c in selectAllFrom(self.cookieTrail%(user,p), "moz_cookies"):
+        if rc:
+          cookies.append(Cookie(c['basedomain'], c['host'], c['name'], c['value'], 'firefox', '%s:%s'%(user,p), c['lastaccessed'], c['creationtime']))
+        else:
+          cookies.append(c)
+    return cookies
 
   def getProfiles(self, user):
     p=subdirsOf(self.profiles%user)

@@ -28,14 +28,20 @@ def addToJar(path, cookies):
     cookies=[cookies]
   grabJar(path)
   jar=sqlite3.connect(path)
+  cs=selectAllFrom(path, "CookieJar")
+  added=0
   for c in cookies:
-    jar.execute('''INSERT INTO CookieJar
-                  (Domain, Host,  Name, Value, LastUsed, CreationTime, TimeJarred, Notes, browser, user )
-                   VALUES(:dom,:host,:name,:val, :lu, :ct, :tj, :notes, :browser, :user)''',
-                   {'dom':c.domain,     'host': c.host,     'name': c.name,  'val':    c.value,   'lu':  c.lastUsed,
-                    'ct':c.creationTime,'tj': c.timeJarred, 'notes':c.notes, 'browser':c.browser, 'user':c.user})
+    if not any(d['domain']==c.domain and d['name']==c.name and d['value']==c.value and d['browser']==c.browser
+                     and d['user']==c.user for d in cs):
+      jar.execute('''INSERT INTO CookieJar
+                    (Domain, Host,  Name, Value, LastUsed, CreationTime, TimeJarred, Notes, browser, user )
+                     VALUES(:dom,:host,:name,:val, :lu, :ct, :tj, :notes, :browser, :user)''',
+                     {'dom':c.domain,     'host': c.host,     'name': c.name,  'val':    c.value,   'lu':  c.lastUsed,
+                      'ct':c.creationTime,'tj': c.timeJarred, 'notes':c.notes, 'browser':c.browser, 'user':c.user})
+      added+=1
   jar.commit()
   jar.close()
+  return added
 
 def selectAllFrom(path, table, where=None):
   conn=sqlite3.connect(path)
