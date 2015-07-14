@@ -99,8 +99,9 @@ def _grab():
         cookies.extend(grabbers[xs[1]].grab(xs[0], rc=True))
       if len(xs)==1:
         for g in grabbers:
-          cookies.extend(g.grab(xs[0], rc=True))
+          cookies.extend(grabbers[g].grab(xs[0], rc=True))
     except Exception as e:
+      print(e)
       ex=x.replace("chk:","")
       ex.replace("|", " > ")
       failed.append(ex)
