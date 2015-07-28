@@ -82,6 +82,11 @@ def query():
   c=selectAllFrom(info['db'], 'CookieJar')
   return render_template("query.html", cookies=c ,info=info)
 
+@app.route('/inject')
+def inject():
+  c=selectAllFrom(info['db'], 'CookieJar')
+  return render_template("inject.html", cookies=c ,info=info, grabable=grabable())
+
 # AJAX routes
 @app.route('/_grab')
 def _grab():

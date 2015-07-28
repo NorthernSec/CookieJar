@@ -1,3 +1,11 @@
+h2{
+  clear:botth;
+}
+
+#grabable{
+  float:left;
+}
+
 .table.table-striped tr.selected{
    background-color: #556677;
    color: #FFFFFF;
