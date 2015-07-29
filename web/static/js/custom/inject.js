@@ -4,16 +4,18 @@ $(document).ready(function(){
     domain:"", name:"", id:"", value:"", browser:"", user:""
   }, function(data){
     allCookies=data['results'];
-    alert(allCookies)
     fillTable(allCookies);
   })
 
-  $("#search").change(function(){
+  $("#search").on('input propertychange paste',function(){
+    var s="###"
     var cookies=[]
     var text = $("#search").val();
+    if (text.length==0){cookies=allCookies}
     for(c in allCookies){
-      if($.inArray(text, [c["host"], c["name"], c["user"]])){
-        cookies.push(c);
+      d=allCookies[c];
+      if((d['host']+s+d['name']+s+d['user']).indexOf(text)>-1){
+        cookies.push(d);
       }
     }
     fillTable(cookies);
