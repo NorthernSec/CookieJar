@@ -174,6 +174,17 @@ def getUser(x):
 def toDate(x):
   return time.strftime('%m/%d/%Y %H:%M:%S',time.gmtime(x/1000000))
 
+@app.template_filter('pathify')
+def pathify(x):
+  y=x.split("/")
+  for i, z in reversed(list(enumerate(y))):
+    if z == "..":
+      del y[i]
+      del y[i-1]
+    elif z == ".":
+      del y[i]
+  return "/".join(y)
+
 # Main
 if __name__=='__main__':
   # Argparse
