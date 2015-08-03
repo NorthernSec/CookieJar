@@ -31,6 +31,7 @@ from werkzeug import secure_filename
 from Config import Configuration as conf
 from DatabaseConnection import selectAllFrom, addToJar, grabJar
 from Toolkit import getUsers
+from Cookie import Cookie
 from MozillaGrabber import MozillaGrabber
 
 # Variables
@@ -98,11 +99,9 @@ def _grab():
     try:
       xs=x.split('|')
       if len(xs)>0: xs[0]=xs[0].replace("chk:","")
-      if len(xs)==3:
-        cookies.extend(grabbers[xs[1]].grab(xs[0], xs[2], rc=True))
-      if len(xs)==2:
-        cookies.extend(grabbers[xs[1]].grab(xs[0], rc=True))
-      if len(xs)==1:
+      if len(xs)==3:   cookies.extend(grabbers[xs[1]].grab(xs[0], xs[2], rc=True))
+      elif len(xs)==2: cookies.extend(grabbers[xs[1]].grab(xs[0], rc=True))
+      elif len(xs)==1:
         for g in grabbers:
           cookies.extend(grabbers[g].grab(xs[0], rc=True))
     except Exception as e:
@@ -138,6 +137,33 @@ def _query():
     x['lastused']    =toDate(x['lastused'])
     x['creationtime']=toDate(x['creationtime'])
   return jsonify({"results":results})
+
+@app.route('/_inject')
+def _inject():
+  items=request.args.get('inject', type=str).split(",")
+  cookies=request.args.get('cookies', type=str).split(",")
+  grabbers={"Mozilla Firefox": MozillaGrabber(args)}
+  c=[selectAllFrom(info['db'], 'CookieJar', ['id=%s'%x]) for x in cookies]
+  c=[Cookie(x[0]['domain'], x[0]['host'], x[0]['name'], x[0]['value'], x[0]['browser'], x[0]['user'], x[0]['lastused'], x[0]['creationtime']) for x in c]
+  success=[]
+  failed=[]
+  for x in items:
+    ex=x.replace("chk:","")
+    ex.replace("|", " > ")
+    try:
+      xs=x.split('|')
+      if len(xs)>0: xs[0]=xs[0].replace("chk:","")
+      if len(xs)==3:   grabbers[xs[1]].inject(c, xs[0], xs[2])
+      elif len(xs)==2: grabbers[xs[1]].inject(c, xs[0])
+      elif len(xs)==1:
+        for g in grabbers:
+          grabbers[g].inject(c, xs[0])
+      success.append(ex)
+    except Exception as e:
+      print(e)
+      failed.append("%s: %s"%(ex,e))
+  if len(failed)>0: return jsonify({"inject":"failure", "success":success, "failed":failed})
+  else:             return jsonify({"inject":"success", "success":success})
 
 # Filters
 @app.template_filter('user')

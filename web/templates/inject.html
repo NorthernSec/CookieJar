@@ -3,7 +3,8 @@
 <head>
   <title>Inject - CookieJar</title>
   <!-- defaults -->
-  {% include 'defaultHead.html' %}
+  {% include 'defaultHead.html' %} 
+  <script type="text/javascript" src="/static/js/custom/grabable.js"></script>
   <script type="text/javascript" src="/static/js/custom/inject.js"></script>
   <script>
     
@@ -29,7 +30,7 @@
           <div>
             <input type="text" placeholder="Search..." id="search">
             <table id="searchresult" class="table">
-              <thead> <tr><td>Host</td><td>Name</td><td>User</td></tr> </thead>
+              <thead> <tr class="warning"><td></td><td>Host</td><td>Name</td><td>User</td></tr> </thead>
               <tbody>
               </tbody>
             </table>

