@@ -17,6 +17,7 @@ import argparse
 from Config import Configuration as conf
 from Cookie import Cookie
 from MozillaGrabber import MozillaGrabber
+from ChromiumGrabber import ChromiumGrabber
 
 # Functions
   
@@ -32,3 +33,5 @@ if __name__=='__main__':
   db=args.db if args.db else conf.getCookieJar()
   mg=MozillaGrabber(args)
   mg.grabAndStore(db)
+  cg=ChromiumGrabber(args)
+  cg.grabAndStore(db)

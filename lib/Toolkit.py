@@ -8,8 +8,10 @@
 # Copyright (c) 2015    Pieter-Jan Moreels
 
 # Imports
+import calendar
 import os
 import platform
+from datetime import datetime, timedelta
 
 def subdirsOf(dir):
   try:
@@ -27,3 +29,12 @@ def getUsers():
     if "Public" in users: users.remove("Public")
   return users
 
+def webkit_to_epoch(ts):
+  estart=datetime(1601,1,1)
+  delta=timedelta(microseconds=int(ts))
+  return calendar.timegm((estart+delta).timetuple())*1000000
+
+def epoch_to_webkit(ts):
+  estart=datetime(1601,1,1)
+  delta=timedelta(microseconds=int(ts))
+  return calendar.timegm((estart-delta).timetuple())*-1000000

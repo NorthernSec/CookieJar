@@ -33,6 +33,7 @@ from DatabaseConnection import selectAllFrom, addToJar, grabJar
 from Toolkit import getUsers
 from Cookie import Cookie
 from MozillaGrabber import MozillaGrabber
+from ChromiumGrabber import ChromiumGrabber
 
 # Variables
 shutdowntime=3
@@ -92,7 +93,6 @@ def inject():
 @app.route('/_grab')
 def _grab():
   items=request.args.get('grab', type=str).split(",")
-  grabbers={"Mozilla Firefox": MozillaGrabber(args)}
   cookies=[]
   failed=[]
   for x in items:
@@ -142,7 +142,6 @@ def _query():
 def _inject():
   items=request.args.get('inject', type=str).split(",")
   cookies=request.args.get('cookies', type=str).split(",")
-  grabbers={"Mozilla Firefox": MozillaGrabber(args)}
   c=[selectAllFrom(info['db'], 'CookieJar', ['id=%s'%x]) for x in cookies]
   c=[Cookie(x[0]['domain'], x[0]['host'], x[0]['name'], x[0]['value'], x[0]['browser'], x[0]['user'], x[0]['lastused'], x[0]['creationtime']) for x in c]
   success=[]
@@ -192,6 +191,7 @@ if __name__=='__main__':
   parser = argparse.ArgumentParser(description=description)
   parser.add_argument('db', metavar='database', nargs='?', help='Database')
   args = parser.parse_args()
+  grabbers={"Mozilla Firefox": MozillaGrabber(args), "Chromium": ChromiumGrabber(args)}
 
   db=args.db if args.db else conf.getCookieJar()
   grabJar(db)
@@ -201,9 +201,9 @@ if __name__=='__main__':
 
   global info
   info={'db':db,
-        'supported':['Mozilla Firefox']}
+        'supported':['Mozilla Firefox', 'Chromium']}
   global supported
-  supported=[MozillaGrabber(args)]
+  supported=[MozillaGrabber(args), ChromiumGrabber(args)]
 
   if conf.getDebug():
     app.run(host=host, port=port, debug=True)
