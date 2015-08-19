@@ -9,6 +9,7 @@
 
 # Imports
 import os
+import platform
 import sys
 runpath=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(runpath, '../lib'))
@@ -31,7 +32,11 @@ if __name__=='__main__':
   args = parser.parse_args()
 
   db=args.db if args.db else conf.getCookieJar()
-  mg=MozillaGrabber(args)
-  mg.grabAndStore(db)
-  cg=ChromiumGrabber(args)
-  cg.grabAndStore(db)
+  if platform.system() == "Linux":
+    sgrabbers=[MozillaGrabber(args), ChromiumGrabber(args)]
+  elif platform.system() == "Windows":
+    grabbers=[MozillaGrabber(args)]
+  else:
+    sys.exit("Unsupported platform")
+  for x in grabbers:
+    x.grabAndStore(db)

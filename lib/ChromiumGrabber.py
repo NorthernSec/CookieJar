@@ -25,9 +25,7 @@ class ChromiumGrabber():
       self.cookieTrail='/home/%s/.config/chromium/%s/Cookies'
       self.profiles='/home/%s/.config/chromium/'
     elif platform.system() == "Windows":
-      # Test this
-      self.cookieTrail=' '
-      self.profiles=' '
+      sys.exit("chromium is not stable for windows yet")
     else:
       sys.exit("Unsupported platform")
 
