@@ -19,6 +19,7 @@ from Config import Configuration as conf
 from Cookie import Cookie
 from MozillaGrabber import MozillaGrabber
 from ChromiumGrabber import ChromiumGrabber
+from ChromeGrabber import ChromeGrabber
 
 # Functions
   
@@ -35,7 +36,7 @@ if __name__=='__main__':
   if platform.system() == "Linux":
     sgrabbers=[MozillaGrabber(args), ChromiumGrabber(args)]
   elif platform.system() == "Windows":
-    grabbers=[MozillaGrabber(args)]
+    grabbers=[MozillaGrabber(args), ChromeGrabber(args)]
   else:
     sys.exit("Unsupported platform")
   for x in grabbers:

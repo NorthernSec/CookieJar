@@ -18,6 +18,7 @@ from lib.Cookie import Cookie
 from lib.DatabaseConnection import selectAllFrom
 from lib.MozillaGrabber import MozillaGrabber
 from lib.ChromiumGrabber import ChromiumGrabber
+from lib.ChromeGrabber import ChromeGrabber
 
 # Functions
 
@@ -52,7 +53,7 @@ if __name__=='__main__':
   elif browser == 'chromium':
     injector=ChromiumGrabber(args)
   elif browser == 'chrome':
-    sys.exit('Still baking...')
+    injector=ChromeGrabber(args)
   else:
     sys.exit('Invalid browser')
 

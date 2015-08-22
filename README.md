@@ -10,8 +10,7 @@ This is currently written to work with **Python 3** on **Windows** and **Linux**
 Support for Python 2.7 is planned for the future
 
 ##Supported browsers
-Currently, we only support Mozilla Firefox. The reason for this ( appart from it being the best browser ;) ) is that it comes natively with most
- Linux distros, and it is the browser that I personally prefer. Support for other browsers will follow in future releases.
+We currently support Mozilla Firefox and Chromium on Linux platforms and Mozilla Firefox and Google Chrome on Windows.
 
 ##Disclaimer
 As with all tools, it can be used for good and evil. We are not responsible for your actions, so use the tool at own risk. Make sure you follow the

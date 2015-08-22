@@ -34,6 +34,7 @@ from Toolkit import getUsers
 from Cookie import Cookie
 from MozillaGrabber import MozillaGrabber
 from ChromiumGrabber import ChromiumGrabber
+from ChromeGrabber import ChromeGrabber
 
 # Variables
 shutdowntime=3
@@ -191,7 +192,7 @@ if __name__=='__main__':
   parser = argparse.ArgumentParser(description=description)
   parser.add_argument('db', metavar='database', nargs='?', help='Database')
   args = parser.parse_args()
-  grabbers={"Mozilla Firefox": MozillaGrabber(args), "Chromium": ChromiumGrabber(args)}
+  grabbers={"Mozilla Firefox": MozillaGrabber(args), "Chromium": ChromiumGrabber(args), "Google Chrome", ChromeGrabber(args)}
 
   db=args.db if args.db else conf.getCookieJar()
   grabJar(db)
@@ -201,7 +202,7 @@ if __name__=='__main__':
 
   global info
   info={'db':db,
-        'supported':['Mozilla Firefox', 'Chromium']}
+        'supported':['Mozilla Firefox', 'Chromium', 'Google Chrome']}
   global supported
   supported=[MozillaGrabber(args), ChromiumGrabber(args)]
 
