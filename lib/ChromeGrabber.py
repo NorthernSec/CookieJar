@@ -22,7 +22,8 @@ class ChromeGrabber():
   def __init__(self, args):
     self.args=args
     if platform.system() == "Linux":
-      sys.exit("Not iImplemented yet")
+      self.cookieTrail='/home/%s/.config/google-chrome/%s/Cookies'
+      self.profiles='/home/%s/.config/google-chrome'
     elif platform.system() == "Windows":
       self.cookieTrail='C:\\Users\\%s\\AppData\\Local\\Google\\Chrome\\User Data\\%s\\Cookies'
       self.profiles='C:\\Users\\%s\\AppData\\Local\\Google\\Chrome\\User Data'

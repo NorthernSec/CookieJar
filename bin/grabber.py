@@ -34,7 +34,7 @@ if __name__=='__main__':
 
   db=args.db if args.db else conf.getCookieJar()
   if platform.system() == "Linux":
-    sgrabbers=[MozillaGrabber(args), ChromiumGrabber(args)]
+    grabbers=[MozillaGrabber(args), ChromeGrabber(args), ChromiumGrabber(args)]
   elif platform.system() == "Windows":
     grabbers=[MozillaGrabber(args), ChromeGrabber(args)]
   else:
