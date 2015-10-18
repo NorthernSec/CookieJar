@@ -1,4 +1,11 @@
-# Legal stuff, credits, info
+#!/usr/bin/env python3.3
+# -*- coding: utf8 -*-
+#
+# Database Layer
+#   Functions related to the database layer
+#
+# Copyright (c) 2015    NorthernSec
+# Copyright (c) 2015    Pieter-Jan Moreels
 
 # Imports
 import platform
